@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /wp-content/uploads/
+
+Disallow: /wp-content/plugins/
+
+Disallow: /wp-admin/
+Disallow: /2020/
+Disallow: /2019/
+
+Disallow: /2018/
+
+Disallow: /2017/
+
+
+
+Sitemap: https://florafountain.com/sitemap.xml
