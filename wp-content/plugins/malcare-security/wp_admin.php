@@ -81,15 +81,17 @@ class MCWPAdmin {
 	public function menu() {
 		$bname = $this->bvinfo->getBrandName();
 		$icon = $this->bvinfo->getBrandIcon();
-		if (isset($_SERVER['cw_allowed_ip'])) {
+		if ($this->siteinfo->isCWServer()) {
 			$brandinfo = $this->cwBrandInfo();
 			$bname = $brandinfo["menuname"];
 			$icon = $brandinfo["brand_icon"];
 		}
-		$keys = array_keys(MCAccount::accountsByPlugname($this->settings));
-		if (!empty($keys)) {
-			$this->account = MCAccount::find($this->settings, $keys[0]);
+
+		$pub_key = MCAccount::getApiPublicKey($this->settings);
+		if ($pub_key && isset($pub_key)) {
+			$this->account = MCAccount::find($this->settings, $pub_key);
 		}
+
 		add_menu_page($bname, $bname, 'manage_options', $this->bvinfo->plugname,
 				array($this, 'adminPage'), plugins_url($icon,  __FILE__ ));
 	}
@@ -158,7 +160,15 @@ class MCWPAdmin {
 	}
 
 	public function adminPage() {
-		require_once dirname( __FILE__ ) . "/admin/main_page.php";
+		if (isset($_REQUEST['add_account'])) {
+			$this->settings->updateOption('bvoverridecw', true);
+			require_once dirname( __FILE__ ) . "/admin/registration.php";
+		} else if(MCAccount::isConfigured($this->settings)) {
+			require_once dirname( __FILE__ ) . "/admin/dashboard.php";
+		} else {
+			$this->settings->updateOption('bvoverridecw', true);
+			require_once dirname( __FILE__ ) . "/admin/registration.php";
+		}
 	}
 
 	public function initBranding($plugins) {
@@ -168,7 +178,7 @@ class MCWPAdmin {
 			return $plugins;
 		}
 
-		if (isset($_SERVER['cw_allowed_ip'])) {
+		if ($this->siteinfo->isCWServer()) {
 			$brand = $this->cwBrandInfo();
 			if (array_key_exists('name', $brand)) {
 				$plugins[$slug]['Name'] = $brand['name'];

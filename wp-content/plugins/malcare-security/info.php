@@ -9,7 +9,7 @@ if (!class_exists('MCInfo')) :
 		public $badgeinfo = 'mcbadge';
 		public $ip_header_option = 'mcipheader';
 		public $brand_option = 'mcbrand';
-		public $version = '3.6';
+		public $version = '3.7';
 		public $webpage = 'https://www.malcare.com';
 		public $appurl = 'https://app.malcare.com';
 		public $slug = 'malcare-security/malcare.php';
@@ -19,6 +19,11 @@ if (!class_exists('MCInfo')) :
 
 		public function __construct($settings) {
 			$this->settings = $settings;
+		}
+
+		public function canOverrideCW() {
+			$scanOption = $this->settings->getOption('bvoverridecw');
+			return (isset($scanOption) && $scanOption == 1);
 		}
 
 		public function getBrandInfo() {

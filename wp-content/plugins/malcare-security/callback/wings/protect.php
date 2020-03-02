@@ -90,7 +90,7 @@ class BVProtectCallback extends BVCallbackBase {
 
 	public function writeToMcDataFile($fname, $content, $confkey, $permissions) {
 		$result = array();
-		if (in_array($fname, BVFWConfig::VALID_MC_DATA_FILENAMES)) {
+		if (in_array($fname, BVFWConfig::$validMcDataFilenames)) {
 
 			$mcDataPath = $this->mcDataPath();
 
@@ -435,7 +435,7 @@ auto_prepend_file = '%s'
 			break;
 		case "rmmcdta":
 			$name = $params['name'];
-			if (in_array($name, BVFWConfig::VALID_DELETABLE_FILES)) {
+			if (in_array($name, BVFWConfig::$validDeletableFiles)) {
 				switch($name) {
 				case "mc.conf":
 					$name = $this->mcConfigFilePath($params['confkey']);

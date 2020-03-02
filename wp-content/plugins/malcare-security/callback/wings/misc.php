@@ -68,6 +68,9 @@ class BVMiscCallback extends BVCallbackBase {
 		case "dlttrsnt":
 			$resp = array("dlttrsnt" => $settings->deleteTransient($params['key']));
 			break;
+		case "ovrcwoptn":
+			$resp = array("ovrcwoptn" => $settings->updateOption('bvoverridecw', true));
+			break;
 		default:
 			$resp = false;
 		}

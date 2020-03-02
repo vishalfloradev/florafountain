@@ -1,10 +1,10 @@
 === CAOS | Host Google Analytics Locally ===
 Contributors: DaanvandenBergh
-Donate link: https://daan.dev/donate/
 Tags: analytics, host, locally, ga, gtag, analytics, woocommerce, gdpr, cookie notice, leverage browser cache, minimize external requests
 Requires at least: 4.6
 Tested up to: 5.3
-Stable tag: 3.0.0
+Stable tag: 3.2.0
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,16 +18,17 @@ Whenever you run an analysis of your website on *Google Pagespeed Insights*, *Pi
 
 Just install the plugin, enter your Tracking-ID and the plugin adds the necessary Tracking Code for Google Analytics to the header (or footer) of your theme, downloads and saves the analytics.js/ga.js/gtag.js-file to your website's server and keeps it updated (automagically) using a scheduled script in wp_cron(). CAOS is a set and forget plugin.
 
-Please keep in mind that, although I try to make the configuration of this plugin as easy as possible, the concept of locally hosting a file or optimizing Google Analytics for *Pagespeed Insights* or *GT Metrix* has proven to be confusing for some people. If you're not sure of what your doing, please consult a SEO expert or Webdeveloper to help you with the configuration and optimization of your WordPress blog. Or feel free to [contact me](https://daan.dev/contact/?utm_source=wordpress&utm_medium=description&utm_campaign=caos) for a quote.
+Please keep in mind that, although I try to make the configuration of this plugin as easy as possible, the concept of locally hosting a file or optimizing Google Analytics for *Pagespeed Insights* or *GT Metrix* has proven to be confusing for some people. If you're not sure of what your doing, please consult a SEO expert or Webdeveloper to help you with the configuration and optimization of your WordPress blog. Or [hire me to do it for you](https://woosh.dev/wordpress-services/caos-expert-configuration/?utm_source=wordpress&utm_medium=description&utm_campaign=caos).
 
 For more information: [How to setup CAOS](https://daan.dev/wordpress-plugins/optimize-analytics-wordpress/?utm_source=wordpress&utm_medium=description&utm_campaign=caos).
 
 == Features ==
 - Host analytics.js, ga.js or gtag.js locally ([What's the difference?](https://daan.dev/wordpress/difference-analyics-gtag-ga-js/?utm_source=wordpress&utm_medium=description&utm_campaign=caos)),
-- WP devs can easily modify the tracking code by using WP filters,
-- When using gtag.js, the underlying request to analytics.js is also loaded from the local source!
+- Endlessly extensible using the integrated filters and available mini plugins! E.g. [integrate Google Optimize](https://daan.dev/how-to/google-optimize-caos/), [track Google Adwords conversions](https://github.com/Dan0sz/caos-google-adwords) and much, much more!
+- When using gtag.js, the underlying request to analytics.js is also hosted locally!
 - **[Bypass Ad Blockers](https://daan.dev/how-to/bypass-ad-blockers-caos/?utm_source=wordpress&utm_medium=description&utm_campaign=caos)** in Stealth Mode: Sneak past Security and protect your Google Analytics data,
-  - In Stealth Mode, requests to linkid.js and ec.js are also served from your server,
+  - In Stealth Mode, requests to linkid.js and ec.js are also hosted locally,
+- Preconnect to google-analytics.com and CDN URL (if set) to reduce latency and speed up requests,
 - Capture outbound links,
 - Allow tracking always or only when a certain cookie exists or has a value -- [Read more about GDPR Compliance](https://daan.dev/wordpress/gdpr-compliance-google-analytics/?utm_source=wordpress&utm_medium=description&utm_campaign=caos),
 - **Add tracking code** to header, **footer** or manually,
@@ -36,7 +37,7 @@ For more information: [How to setup CAOS](https://daan.dev/wordpress-plugins/opt
 - Save analytics.js/ga.js/gtag.js anywhere within the WordPress content (wp-content) directory to avoid detection by WordPress security plugins (such as WordFence) or removal by caching plugins (such as WP Super Cache),
 - Serve analytics.js/ga.js/gtag.js from your CDN,
 - Set Cookie Expiry Period,
-- Set Adjusted Bounce Rate,
+- Set [Adjusted Bounce Rate](https://daan.dev/wordpress/adjusted-bounce-rate-caos/?utm_source=wordpress&utm_medium=description&utm_campaign=caos),
 - Change enqueue order (prioritize order of loaded scripts),
 - Force disabling display features functionalities,
 - Anonymize IP addresses,
@@ -116,15 +117,30 @@ CAOS adds a local file called gtag.js/analytics.js/gtag.js (depending on your ch
 
 Yes, you can! Simply add the URL of your CDN within the advanced options and analytics.js/gtag.js/ga.js will be served from your CDN.
 
-= Can I buy you a beer? =
-
-Yes, please! [Click here to buy me a beer](http://daan.dev/donate/?utm_source=wordpress&utm_medium=description&utm_campaign=caos "Let's do shots!")!
-
 == Screenshots ==
 
 N/A
 
 == Changelog ==
+
+= 3.2.0 =
+CAOS can now preconnect to google-analytics.com and CDN URL (if set).
+
+= 3.1.3 =
+Do not output success message when update-script is executed by CRON.
+Added extra filter to allow further manipulation of the analytics.js tracking code.
+
+= 3.1.2 =
+Added filters on script elements.
+
+= 3.1.1 =
+CAOS now throws a notice if cURL is disabled on the server.
+
+= 3.1.0 =
+Added filter to add additional configuration using the gtag tracking snippet. Updated readme.txt.
+
+= 3.0.1 =
+Fixed bug where using Adjusted Bounce Rate would trigger two pageviews.
 
 = 3.0.0 =
 Major code overhaul. Major performance improvements.

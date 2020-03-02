@@ -87,7 +87,7 @@ class BVFW {
 
 	public function hasValidBypassCookie() {
 		$cookie = (string) $this->request->getCookies(BVFW::BYPASS_COOKIE);
-		return ($this->config->canSetCookie() && ($cookie === $this->generateBypassCookie()));
+		return ($this->canSetAdminCookie() && ($cookie === $this->generateBypassCookie()));
 	}
 
 	public function setIPCookie() {
@@ -102,7 +102,9 @@ class BVFW {
 
 	public function getBVCookies() {
 		$cookies = array();
-		$cookies[BVFW::IP_COOKIE] = (string) $this->request->getCookies(BVFW::IP_COOKIE);
+		if ($this->request->getCookies(BVFW::IP_COOKIE) !== NULL) {
+			$cookies[BVFW::IP_COOKIE] = (string) $this->request->getCookies(BVFW::IP_COOKIE);
+		}
 		return $cookies;
 	}
 
@@ -128,9 +130,12 @@ class BVFW {
 	public function isActive() {
 		return $this->config->isActive();
 	}
+	public function canSetAdminCookie() {
+		return ($this->config->adminCookieMode === BVFWConfig::ADMIN_COOKIE_MODE_ENABLED);
+	}
 
-	public function canSetCookie() {
-		return $this->config->canSetCookie();
+	public function canSetIPCookie() {
+		return ($this->config->ipCookieMode === BVFWConfig::IP_COOKIE_MODE_ENABLED);
 	}
 
 	public function setResponseCode() {
@@ -142,16 +147,21 @@ class BVFW {
 		return true;
 	}
 
-	public function log() {
-		$this->setResponseCode();
+	public function canLog() {
+		$canlog = false;
 
-		if ($this->config->canSetCookie()) {
-			$canlog = !$this->hasValidBypassCookie();
-		} else {
-			$canlog = (!function_exists('is_user_logged_in') || !is_user_logged_in());
+		if ($this->config->isCompleteLoggingEnabled()) {
+			$canlog = true;
+		} else if ($this->config->isVisitorLoggingEnabled()) {
+			$canlog = !$this->hasValidBypassCookie() &&
+					(!function_exists('is_user_logged_in') || !is_user_logged_in());
 		}
+		return $canlog;
+	}
 
-		if ($canlog) {
+	public function log() {
+		if ($this->canLog()) {
+			$this->setResponseCode();
 			$this->logger->log($this->request->getDataToLog());
 		}
 	}
@@ -195,28 +205,20 @@ class BVFW {
 	public function execute() {
 		if ($this->config->canProfileReqInfo()) {
 			$result = array();
+
+			if ($this->request->getMethod() === 'POST' &&
+				preg_match('/(admin-ajax.php|admin-post.php)$/', $this->request->getPath())) {
+				$result += $this->profileRequestInfo(array("action" => $this->request->getBody('action')),
+					true, 'BODY[');
+			}
 			$result += $this->profileRequestInfo($this->request->getBody(),
-					$this->config->isReqProfilingModeDebug(), 'BODY_');
-
+					$this->config->isReqProfilingModeDebug(), 'BODY[');
 			$result += $this->profileRequestInfo($this->request->getQueryString(),
-					true, 'GET_');
-
+					true, 'GET[');
 			$result += $this->profileRequestInfo($this->request->getFiles(),
-					true, 'FILES_');
-
+					true, 'FILES[');
 			$result += $this->profileRequestInfo($this->getBVCookies(),
-					true, 'COOKIES_');
-
-			if (strpos($this->request->getPath(), 'admin-ajax.php') !== false) {
-				$result += array('BODY_ADMIN_AJAX_ACTION' => $this->request->getBody('action'));
-				$result += array('GET_ADMIN_AJAX_ACTION' => $this->request->getQueryString('action'));
-			}
-
-			if (strpos($this->request->getPath(), 'admin-post.php') !== false) {
-				$result += array('BODY_ADMIN_POST_ACTION' => $this->request->getBody('action'));
-				$result += array('GET_ADMIN_POST_ACTION' => $this->request->getQueryString('action'));
-			}
-
+					true, 'COOKIES[');
 			$this->request->updateReqInfo($result);
 		}
 
@@ -252,40 +254,41 @@ class BVFW {
 		}
 	}
 
-	public function profileRequestInfo($params, $debug = false, $prefix = '') {
+	public function profileRequestInfo($params, $debug = false, $prefix = '', $obraces = 1) {
 		$result = array();
 		if (is_array($params)) {
 			foreach ($params as $key => $value) {
-				$currkey = $prefix . $key;
+				$key = $prefix . $key;
 				if (is_array($value)) {
-					$result = $result + $this->profileRequestInfo($value, $debug, $currkey . '_');
+					$result = $result + $this->profileRequestInfo($value, $debug, $key . '[', $obraces + 1);
 				} else {
-					$result[$currkey] = array();
+					$key = $key . str_repeat(']', $obraces);
+					$result[$key] = array();
 					$valsize = $this->getLength($value);
-					$result[$currkey]["size"] = $valsize;
+					$result[$key]["size"] = $valsize;
 					if ($debug === true && $valsize < 256) {
-						$result[$currkey]["value"] = $value;
+						$result[$key]["value"] = $value;
 						continue;
 					}
 
 					if (preg_match('/^\d+$/', $value)) {
-						$result[$currkey]["numeric"] = true;
+						$result[$key]["numeric"] = true;
 					} else if (preg_match('/^\w+$/', $value)) {
-						$result[$currkey]["regular_word"] = true;
+						$result[$key]["regular_word"] = true;
 					} else if (preg_match('/^\S+$/', $value)) {
-						$result[$currkey]["special_word"] = true;
+						$result[$key]["special_word"] = true;
 					} else if (preg_match('/^[\w\s]+$/', $value)) {
-						$result[$currkey]["regular_sentence"] = true;
+						$result[$key]["regular_sentence"] = true;
 					} else if (preg_match('/^[\w\W]+$/', $value)) {
-						$result[$currkey]["special_chars_sentence"] = true;
+						$result[$key]["special_chars_sentence"] = true;
 					}
 
 					if (preg_match('/^\b((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}
 						(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\b$/x', $value)) {
-						$result[$currkey]["ipv4"] = true;
+						$result[$key]["ipv4"] = true;
 					} else if (preg_match('/\b((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}
 						(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\b/x', $value)) {
-						$result[$currkey]["embeded_ipv4"] = true;
+						$result[$key]["embeded_ipv4"] = true;
 					} else if (preg_match('/^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|
 						([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|
 						([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}
@@ -295,7 +298,7 @@ class BVFW {
 						::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}
 						(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|
 						(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/x', $value)) {
-						$result[$currkey]["ipv6"] = true;
+						$result[$key]["ipv6"] = true;
 					} else if (preg_match('/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|
 						([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|
 						([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}
@@ -305,35 +308,35 @@ class BVFW {
 						::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}
 						(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|
 						(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/x', $value)) {
-						$result[$currkey]["embeded_ipv6"] = true;
+						$result[$key]["embeded_ipv6"] = true;
 					}
 
 					if (preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/', $value)) {
-						$result[$currkey]["email"] = true;
+						$result[$key]["email"] = true;
 					} else if (preg_match('/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}/', $value)) {
-						$result[$currkey]["embeded_email"] = true;
+						$result[$key]["embeded_email"] = true;
 					}
 
 					if (preg_match('/^(http|ftp)s?:\/\/\S+$/i', $value)) {
-						$result[$currkey]["link"] = true;
+						$result[$key]["link"] = true;
 					} else if (preg_match('/(http|ftp)s?:\/\/\S+$/i', $value)) {
-						$result[$currkey]["embeded_link"] = true;
+						$result[$key]["embeded_link"] = true;
 					}
 
 					if (preg_match('/<(html|head|title|base|link|meta|style|picture|source|img|
 						iframe|embed|object|param|video|audio|track|map|area|form|label|input|button|
 						select|datalist|optgroup|option|textarea|output|progress|meter|fieldset|legend|
 						script|noscript|template|slot|canvas)/ix', $value)) {
-						$result[$currkey]["embeded_html"] = true;
+						$result[$key]["embeded_html"] = true;
 					}
 
 					if (preg_match('/\.(jpg|jpeg|png|gif|ico|pdf|doc|docx|ppt|pptx|pps|ppsx|odt|xls|zip|gzip|
 						xlsx|psd|mp3|m4a|ogg|wav|mp4|m4v|mov|wmv|avi|mpg|ogv|3gp|3g2|php|html|phtml|js|css)/ix', $value)) {
-						$result[$currkey]["file"] = true;
+						$result[$key]["file"] = true;
 					}
 
 					if ($this->matchCount(BVFW::SQLIREGEX, $value) >= 2) {
-						$result[$currkey]["sql"] = true;
+						$result[$key]["sql"] = true;
 					}
 				}
 			}

@@ -10,6 +10,7 @@ if (!class_exists('BVCallbackHandler')) :
 		public $request;
 		public $account;
 		public $response;
+		public $bvinfo;
 
 		public function __construct($db, $settings, $siteinfo, $request, $account, $response) {
 			$this->db = $db;
@@ -18,6 +19,7 @@ if (!class_exists('BVCallbackHandler')) :
 			$this->request = $request;
 			$this->account = $account;
 			$this->response = $response;
+			$this->bvinfo = new MCInfo($this->settings);
 		}
 
 		public function bvAdmExecuteWithoutUser() {
@@ -30,17 +32,16 @@ if (!class_exists('BVCallbackHandler')) :
 
 		public function execute($resp = array()) {
 			$this->routeRequest();
-			$bvinfo = new MCInfo($this->settings);
 			$resp = array(
 				"request_info" => $this->request->info(),
 				"site_info" => $this->siteinfo->info(),
 				"account_info" => $this->account->info(),
-				"bvinfo" => $bvinfo->info(),
+				"bvinfo" => $this->bvinfo->info(),
 				"api_pubkey" => substr(MCAccount::getApiPublicKey($this->settings), 0, 8)
 			);
 			$this->response->terminate($resp);
 		}
-	
+
 		public function routeRequest() {
 			switch ($this->request->wing) {
 			case 'manage':

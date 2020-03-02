@@ -60,15 +60,14 @@ if ($fileStatus): ?>
                     <br/>
                 <?php endforeach; ?>
                 <p class="description">
-                    <?= sprintf(__('Choose \'Always\' to use Google Analytics without a Cookie Notice. Follow %sthis tutorial%s to comply with GDPR Laws.', 'host-analyticsjs-local'), '<a href="' . CAOS_SITE_URL . '/wordpress/analytics-gdpr-anonymize-ip-cookie-notice/?utm_source=caos&utm_medium=plugin&utm_campaign=settings" target="_blank">', '</a>'); ?>
+                    <?= sprintf(__('Choose \'Always\' to use Google Analytics without a Cookie Notice. Follow %sthis tutorial%s to comply with GDPR Laws.', 'host-analyticsjs-local'), '<a href="' . CAOS_SITE_URL . "/wordpress/analytics-gdpr-anonymize-ip-cookie-notice/$utmTags\" target='_blank'>", '</a>'); ?>
                     <?php _e('Choose \'When cookie is set\' or \'When cookie has a value\' to make CAOS compatible with your Cookie Notice plugin.', 'host-analyticsjs-local'); ?>
                     <a href="<?= CAOS_SITE_URL; ?>/wordpress/gdpr-compliance-google-analytics/<?= $utmTags; ?>" target="_blank">
                         <?php _e('Read more', 'host-analyticsjs-local'); ?></a>.
                 </p>
             </td>
         </tr>
-        <tr class="caos_gdpr_setting caos_allow_tracking_name"
-            valign="top" <?= CAOS_OPT_ALLOW_TRACKING ? '' : 'style="display: none;"'; ?>>
+        <tr class="caos_gdpr_setting caos_allow_tracking_name" valign="top" <?= CAOS_OPT_ALLOW_TRACKING ? '' : 'style="display: none;"'; ?>>
             <th scope="row"><?php _e('Cookie name', 'host-analyticsjs-local'); ?></th>
             <td>
                 <input type="text" name="<?= CAOS_Admin_Settings::CAOS_SETTING_COOKIE_NOTICE_NAME; ?>"
@@ -78,8 +77,7 @@ if ($fileStatus): ?>
                 </p>
             </td>
         </tr>
-        <tr class="caos_gdpr_setting caos_allow_tracking_name caos_allow_tracking_value"
-            valign="top" <?= CAOS_OPT_ALLOW_TRACKING == 'cookie_has_value' ? '' : 'style="display: none;"'; ?>>
+        <tr class="caos_gdpr_setting caos_allow_tracking_name caos_allow_tracking_value" valign="top" <?= CAOS_OPT_ALLOW_TRACKING == 'cookie_has_value' ? '' : 'style="display: none;"'; ?>>
             <th scope="row"><?php _e('Cookie value', 'host-analyticsjs-local'); ?></th>
             <td>
                 <input type="text" name="<?= CAOS_Admin_Settings::CAOS_SETTING_COOKIE_VALUE; ?>"
@@ -94,8 +92,8 @@ if ($fileStatus): ?>
             <td>
                 <?php
                 $caos_snippet_type = array(
-                    'default' => __('Default', 'host-analyticsjs-local'),
-                    'async'   => __('Asynchronous', 'host-analyticsjs-local')
+                    ''      => __('Default', 'host-analyticsjs-local'),
+                    'async' => __('Asynchronous', 'host-analyticsjs-local')
                 );
                 ?>
                 <select name="<?= CAOS_Admin_Settings::CAOS_SETTING_SNIPPET_TYPE; ?>" class="caos_snippet_type">
@@ -206,6 +204,15 @@ if ($fileStatus): ?>
             </td>
         </tr>
         <tr valign="top">
+            <th scope="row"><?= __('Enable Preconnect? (Recommended)', 'host-analyticsjs-local'); ?></th>
+            <td>
+                <input type="checkbox" class="caos-preconnect" name="<?= CAOS_Admin_Settings::CAOS_SETTING_PRECONNECT; ?>" <?= CAOS_OPT_PRECONNECT == 'on' ? 'checked = "checked"' : ''; ?> />
+                <p class="description">
+                    <?= __('Preconnect to google-analytics.com and CDN URL (if set) to reduce latency and speed up requests to these servers.', 'host-analyticsjs-local'); ?>
+                </p>
+            </td>
+        </tr>
+        <tr valign="top">
             <th scope="row"><?php _e('Capture outbound links?', 'host-analyticsjs-local'); ?></th>
             <td>
                 <input type="checkbox" class="caos-capture-outbound-links" name="<?= CAOS_Admin_Settings::CAOS_SETTING_CAPTURE_OUTBOUND_LINKS; ?>" <?= CAOS_OPT_CAPTURE_OUTBOUND_LINKS == "on" ? 'checked = "checked"' : ''; ?> />
@@ -226,12 +233,12 @@ if ($fileStatus): ?>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row"><?php _e('Use adjusted bounce rate?', 'host-analyticsjs-local'); ?></th>
+            <th scope="row"><?php _e('Use adjusted bounce rate? (seconds)', 'host-analyticsjs-local'); ?></th>
             <td>
                 <input type="number" name="<?= CAOS_Admin_Settings::CAOS_SETTING_ADJUSTED_BOUNCE_RATE; ?>" min="0" max="60"
                        value="<?= CAOS_OPT_ADJUSTED_BOUNCE_RATE; ?>"/>
                 <p class="description">
-                    <a href="https://moz.com/blog/adjusted-bounce-rate" target="_blank"><?php _e('More information about adjusted bounce rate', 'host-analyticsjs-local'); ?></a>.
+                    <a href="<?= CAOS_SITE_URL; ?>/how-to/adjusted-bounce-rate-caos/<?= $utmTags; ?>" target="_blank"><?php _e('More information about adjusted bounce rate', 'host-analyticsjs-local'); ?></a>.
                 </p>
             </td>
         </tr>

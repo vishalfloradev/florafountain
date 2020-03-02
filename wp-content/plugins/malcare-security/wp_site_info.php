@@ -81,5 +81,9 @@ class MCWPSiteInfo {
 		else
 			return substr($sig, 0, 6);
 	}
+
+	public function isCWServer() {
+		return isset($_SERVER['cw_allowed_ip']);
+	}
 }
 endif;

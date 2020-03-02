@@ -59,7 +59,7 @@ require_once dirname( __FILE__ ) . '/logger.php';
 
 			if ($fw->isActive()) {
 
-				if ($fw->canSetCookie()) {
+				if ($fw->canSetIPCookie()) {
 					$fw->setIPCookie();
 				}
 

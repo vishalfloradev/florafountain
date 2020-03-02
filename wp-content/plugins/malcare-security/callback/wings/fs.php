@@ -8,8 +8,12 @@ class BVFSCallback extends BVCallbackBase {
 	public $stream;
 	public $account;
 
+	public static $cwAllowedFiles = array(".htaccess", ".user.ini", "malcare-waf.php");
+
 	public function __construct($callback_handler) {
 		$this->account = $callback_handler->account;
+		$this->siteinfo = $callback_handler->siteinfo;
+		$this->bvinfo = $callback_handler->bvinfo;
 	}
 
 	function fileStat($relfile) {
@@ -262,6 +266,24 @@ class BVFSCallback extends BVCallbackBase {
 	function process($request) {
 		$params = $request->params;
 		$stream_init_info = BVStream::startStream($this->account, $request);
+		
+		if($this->siteinfo->isCWServer() && !$this->bvinfo->canOverrideCW()) {
+			if(array_key_exists('initdir', $params)) {
+				return $stream_init_info;
+			}
+
+			if (array_key_exists('files', $params)) {
+				$files = $params['files'];
+
+				foreach($files as $file) {
+					if (!in_array($file, BVFSCallback::$cwAllowedFiles)) {
+						return $stream_init_info;
+					}
+				}
+			}
+		}
+
+
 		if (array_key_exists('stream', $stream_init_info)) {
 			$this->stream = $stream_init_info['stream'];
 			switch ($request->method) {

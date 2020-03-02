@@ -49,6 +49,7 @@ class CAOS
         define('CAOS_OPT_COOKIE_VALUE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_COOKIE_VALUE)));
         define('CAOS_OPT_COMPATIBILITY_MODE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_COMPATIBILITY_MODE, null)));
         define('CAOS_OPT_STEALTH_MODE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_STEALTH_MODE)));
+        define('CAOS_OPT_PRECONNECT', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_PRECONNECT)));
         define('CAOS_OPT_COOKIE_EXPIRY', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_GA_COOKIE_EXPIRY_DAYS)));
         define('CAOS_OPT_ADJUSTED_BOUNCE_RATE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_ADJUSTED_BOUNCE_RATE)));
         define('CAOS_OPT_ENQUEUE_ORDER', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_ENQUEUE_ORDER, 0)));
@@ -56,7 +57,7 @@ class CAOS
         define('CAOS_OPT_TRACK_ADMIN', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_TRACK_ADMIN)));
         define('CAOS_OPT_DISABLE_DISPLAY_FEAT', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_DISABLE_DISPLAY_FEATURES)));
         define('CAOS_OPT_SCRIPT_POSITION', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_SCRIPT_POSITION)));
-        define('CAOS_OPT_SNIPPET_TYPE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_SNIPPET_TYPE, 'default')));
+        define('CAOS_OPT_SNIPPET_TYPE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_SNIPPET_TYPE)));
         define('CAOS_OPT_REMOTE_JS_FILE', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_JS_FILE, 'analytics.js')));
         define('CAOS_OPT_CACHE_DIR', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_CACHE_DIR, '/cache/caos-analytics/')));
         define('CAOS_OPT_CDN_URL', esc_attr(get_option(CAOS_Admin_Settings::CAOS_SETTING_CDN_URL)));

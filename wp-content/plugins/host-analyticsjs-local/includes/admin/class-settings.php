@@ -17,7 +17,7 @@ defined('ABSPATH') || exit;
 
 class CAOS_Admin_Settings
 {
-    const CAOS_ADMIN_ALLOW_TRACKING_OPTIONS  = array(
+    const CAOS_ADMIN_ALLOW_TRACKING_OPTIONS     = array(
         ''                  => array(
             'label' => 'Always (default)',
             'show'  => null,
@@ -39,7 +39,7 @@ class CAOS_Admin_Settings
             'hide'  => null
         )
     );
-    const CAOS_ADMIN_SCRIPT_POSITION_OPTIONS = array(
+    const CAOS_ADMIN_SCRIPT_POSITION_OPTIONS    = array(
         'header' => array(
             'label' => 'Header (default)',
             'hide'  => 'caos_add_manually',
@@ -56,12 +56,12 @@ class CAOS_Admin_Settings
             'show'  => 'caos_add_manually'
         )
     );
-    const CAOS_ADMIN_JS_FILE_OPTIONS         = array(
+    const CAOS_ADMIN_JS_FILE_OPTIONS            = array(
         "Analytics.js (default)" => "analytics.js",
         "Gtag.js"                => "gtag.js",
         "Ga.js (legacy)"         => "ga.js"
     );
-    const CAOS_ADMIN_COMPATIBILITY_OPTIONS = array(
+    const CAOS_ADMIN_COMPATIBILITY_OPTIONS      = array(
         ''                 => array(
             'label' => 'None (default)'
         ),
@@ -84,6 +84,7 @@ class CAOS_Admin_Settings
     const CAOS_SETTING_COOKIE_VALUE             = 'caos_cookie_value';
     const CAOS_SETTING_COMPATIBILITY_MODE       = 'caos_analytics_compatibility_mode';
     const CAOS_SETTING_STEALTH_MODE             = 'caos_stealth_mode';
+    const CAOS_SETTING_PRECONNECT               = 'caos_preconnect';
     const CAOS_SETTING_JS_FILE                  = 'caos_analytics_js_file';
     const CAOS_SETTING_CACHE_DIR                = 'caos_analytics_cache_dir';
     const CAOS_SETTING_CDN_URL                  = 'caos_analytics_cdn_url';

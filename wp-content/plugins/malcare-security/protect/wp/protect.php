@@ -40,12 +40,12 @@ class BVProtect {
 
 		if ($fw->isActive()) {
 
-			if ($fw->canSetCookie()) {
+			if ($fw->canSetAdminCookie()) {
 				add_action('init', array($fw, 'setBypassCookie'));
+			}
 
-				if (!defined('MCFWLOADED')) {
-					$fw->setIPCookie();
-				}
+			if (!defined('MCFWLOADED') && $fw->canSetIPCookie()) {
+				$fw->setIPCookie();
 			}
 
 			if (!defined('MCFWLOADED')) {

@@ -418,7 +418,7 @@ function mobile_my_menus()
 
 }
 
-add_action( 'wp_enqueue_scripts', 'generatepress_child_enqueue_scripts' );
+//add_action( 'wp_enqueue_scripts', 'generatepress_child_enqueue_scripts' );
 /*add_filter('style_loader_tag', 'myplugin_remove_type_attr', 10, 2);
 add_filter('script_loader_tag', 'myplugin_remove_type_attr', 10, 2);
 add_filter('autoptimize_html_after_minify', 'myplugin_remove_type_attr', 10, 2);

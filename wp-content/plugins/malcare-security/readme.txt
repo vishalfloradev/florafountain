@@ -5,8 +5,8 @@ Plugin URI: https://www.malcare.com
 Donate link: https://www.malcare.com
 Requires at least: 4.0
 Tested up to: 5.3
-Requires PHP: 5.3.0
-Stable tag: 3.6
+Requires PHP: 5.4.0
+Stable tag: 3.7
 License: GPLv2 or later
 License URI: [http://www.gnu.org/licenses/gpl-2.0.html](http://www.gnu.org/licenses/gpl-2.0.html)
 
@@ -218,6 +218,10 @@ FTP details input into MalCare is processed on our servers. We need your FTP cre
 8. With BlogVault's White-Label Solution you can showcase our service under your own brilliant brand.
 
 == CHANGELOG ==
+= 3.7 =
+* Removing deprecated get_magic_quotes_gpc function
+* Improving Firewall Logging
+
 = 3.6 =
 * WPCli to server request path updated
 * Authentication header added in wpcli request param
