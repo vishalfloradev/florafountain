@@ -21,13 +21,13 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'florastaging' );
+define( 'DB_NAME', 'gullivfs_live' );
 
 /** MySQL database username */
-define( 'DB_USER', 'ff_user' );
+define( 'DB_USER', 'liveflora' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', '36q!++UYR(}6' );
+define( 'DB_PASSWORD', 'Cupo15?3' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'localhost' );
