@@ -1,42 +1,23 @@
 <?php
-
 /**
-
  * The header for our theme
-
  *
-
  * This is the template that displays all of the <head> section and everything up until <div id="content">
-
- *
-
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
-
  *
-
  * @package WordPress
-
  * @subpackage Twenty_Seventeen
-
  * @since 1.0
-
  * @version 1.0
-
  */
-
 global $redux_demo;
 $logo = $redux_demo['opt-media'];
 $logo_url = $logo['url'];
 $logo_title = $logo['title'];
-
 ?>
-
 <!DOCTYPE html>
-
 <html <?php language_attributes(); ?> class="no-js no-svg">
-
 <head>
-
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="theme-color" content="#FDD73B">
 <meta name="apple-mobile-web-app-status-bar-style" content="#FDD73B">
@@ -44,6 +25,47 @@ $logo_title = $logo['title'];
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i&display=swap" rel="stylesheet">
 <link rel="profile" href="http://gmpg.org/xfn/11">
+    <?php
+if (is_category())
+    {
+        $queried_object = get_queried_object();
+        $taxonomy = $queried_object->taxonomy;
+        $term_id = $queried_object->term_id;
+        $sid = $taxonomy . '_' . $term_id;
+    }
+
+        $seotitle = get_field( "title",$sid);
+        $meta_keyword = get_field( "meta_keyword",$sid );
+        $meta_description = get_field( "meta_description",$sid);
+        $og_type = get_field( "og_type",$sid );
+        $og_title = get_field( "og_title",$sid );
+        $og_description = get_field( "og_description",$sid );
+        $og_site_name = get_field( "og_site_name",$sid );
+        $og_image = get_field( "og_image",$sid );
+        $twitter_title = get_field( "twitter_title",$sid );
+        $twitter_description = get_field( "twitter_description",$sid );
+        $twitter_image = get_field( "twitter_image",$sid );
+    if($seotitle == '')
+    {
+        $seotitle = get_the_title();
+    }
+    ?>
+    <title><?php echo $seotitle; ?></title>
+    <meta name="keywords" content="<?php echo $meta_keyword; ?>" />
+    <meta name="description" content="<?php echo $meta_description; ?>">
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="<?php echo $og_type; ?>" />
+    <meta property="og:title" content="<?php echo $og_title; ?>" />
+    <meta property="og:description" content="<?php echo $og_description; ?>" />
+    <meta property="og:url" content="<?php echo $current_uri = home_url( add_query_arg( NULL, NULL ) ); ?>" />
+    <meta property="og:site_name" content="<?php echo $og_site_name; ?>" />
+    <meta property="og:image" content="<?php echo $og_image; ?>" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:description" content="<?php echo $twitter_description; ?>" />
+    <meta name="twitter:title" content="<?php echo $twitter_title; ?>" />
+    <meta name="twitter:image" content="<?php echo $twitter_image; ?>" />
+    <meta name="robots" content="index, follow"/>
+    <link rel="canonical" href="<?php echo $current_uri = home_url( add_query_arg( NULL, NULL ) ); ?>" />
 <script type="text/javascript">
 //document.addEventListener('touchmove', function(event) {
 //     event.preventDefault();
@@ -60,26 +82,6 @@ $logo_title = $logo['title'];
 <![endif]-->
 
 <?php wp_head(); ?>
-<script type="application/ld+json">
-{
-  "@context" : "http://schema.org",
-  "@type" : "Digital and Creative Agency",
-  "name" : "Flora Fountain",
- "url" : "https://florafountain.com/",
- "sameAs" : [
-   "https://www.facebook.com/FloraFountain.in/",
-   "https://twitter.com/FloraFountainIn",
-   "https://www.instagram.com/florafountain.in/"
-   ],
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "502, Akshar Stadia, Nr Allen Career Institute, Thaltej, Ahmedabad, Gujarat-380059",
-    "addressRegion": "GUjarat",
-    "postalCode": "380059",
-    "addressCountry": "India"
-  }
-}
-</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102326971-1"></script>
 <script>
@@ -235,4 +237,3 @@ endif;
 		</div>
 	</div>
 </header>
-
