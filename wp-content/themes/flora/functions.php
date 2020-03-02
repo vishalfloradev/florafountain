@@ -228,6 +228,94 @@ function custom_post_type()
 
     register_post_type('Portfolio', $portfolio_args);
 
+// Set other options for Custom Post Type case study
+
+ $case_study_labels = array(
+
+        'name' => _x('Case Study', 'Post Type General Name', 'flora'),
+
+        'singular_name' => _x('Case Study', 'Post Type Singular Name', 'flora'),
+
+        'menu_name' => __('Case Study', 'flora'),
+
+        'parent_item_colon' => __('Parent Case Study', 'flora'),
+
+        'all_items' => __('All Case Study', 'flora'),
+
+        'view_item' => __('View Case Study', 'flora'),
+
+        'add_new_item' => __('Add New Case Study', 'flora'),
+
+        'add_new' => __('Add New', 'flora'),
+
+        'edit_item' => __('Edit Case Study', 'flora'),
+
+        'update_item' => __('Update Case Study', 'flora'),
+
+        'search_items' => __('Search Case Study', 'flora'),
+
+        'not_found' => __('Not Found', 'flora'),
+
+        'not_found_in_trash' => __('Not found in Trash', 'flora'),
+
+    );
+
+    $case_study__args = array(
+
+        'label' => __('Case Study', 'flora'),
+
+        'description' => __('Case Study Image and reviews', 'flora'),
+
+        'labels' => $case_study_labels,
+
+        // Features this CPT supports in Post Editor
+
+        'supports' => array('title', 'editor', 'thumbnail'),
+
+        // You can associate this CPT with a taxonomy or custom taxonomy. 
+
+        'taxonomies'          => array( '' ),
+
+        /* A hierarchical CPT is like Pages and can have
+
+        * Parent and child items. A non-hierarchical CPT
+
+        * is like Posts.
+
+        */
+
+        'hierarchical' => false,
+
+        'public' => true,
+
+        'show_ui' => true,
+
+        'show_in_menu' => true,
+
+        'show_in_nav_menus' => true,
+
+        'show_in_admin_bar' => true,
+
+        'menu_position' => 6,
+
+        'can_export' => true,
+
+        'has_archive' => true,
+
+        'exclude_from_search' => false,
+
+        'publicly_queryable' => true,
+
+        'capability_type' => 'page',
+
+    );
+	
+	// register taxonomy
+    register_taxonomy('casestudy_category', 'casestudy', array('hierarchical' => true, 'label' => 'Category', 'query_var' => true, 'rewrite' => array( 'slug' => 'casestudy_category' )));
+	
+    // Registering your Custom Post Type
+
+    register_post_type('Case Study', $case_study__args);
 
 }
 
