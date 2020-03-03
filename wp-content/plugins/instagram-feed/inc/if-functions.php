@@ -732,6 +732,7 @@ function sbi_rand_sort( $a, $b ) {
  */
 function sbi_get_resized_uploads_url() {
 	$upload = wp_upload_dir();
+	$upload=preg_replace('/^https?:/', '', $upload);
 
 	return trailingslashit( $upload['baseurl'] ) . trailingslashit( SBI_UPLOADS_NAME );
 }

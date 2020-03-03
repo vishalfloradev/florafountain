@@ -72,12 +72,12 @@ $casestudys = get_posts($args);
 if (!empty($casestudys)) :
 $i = 1;
 foreach ($casestudys as $casestudy) :
-$main_image = get_field('main_image',$casestudy->ID );
+$main_image = get_field('case_study_list_image',$casestudy->ID );
 $image = wp_get_attachment_image_src( $main_image, 'full' );
 $alt_text = get_post_meta($main_image , '_wp_attachment_image_alt', true);
 ?>
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-      <div class="casedetails"> <img src="<?php echo $image[0]; ?>" alt="<?php echo $alt_text; ?>"  class="image"/>
+      <div class="casedetails"><a href="<?php echo get_the_permalink($casestudy->ID); ?>" class="links"> <img src="<?php echo $image[0]; ?>" alt="<?php echo $alt_text; ?>"  class="image"/></a>
         <div class="middle"> <a href="<?php echo get_the_permalink($casestudy->ID); ?>" class="">
           <div class="casetext"><?php echo get_the_title($casestudy->ID); ?></div>
           </a></div>
@@ -91,45 +91,6 @@ endif;
   </div>
 </div>
 <div class="clearfix"></div>
-<style>
-.casedetails {
-border: 1px solid #e8e8e8;
-background: rgb(242, 205, 73, 0.9);
-width: 100%;
-margin: 10px 0;
-box-shadow: 1px 4px 4px #e8e8e8;
-float: left;
-}
-.casedetails:hover .middle {
-opacity: 1;
-padding: 50px 50px;
-/* border: 1px solid #fff; */
-width: 80%;
-}
-.casedetails a {
-    text-transform: uppercase;
-    padding: 18px 30px 14px 30px;
-    border-radius: 36px;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0 auto;
-    color: #000;
-}
-
-.casetext {
-color: #000;
-font-size: 16px;
-padding: 12px 30px 6px 30px;
-display: none;
-text-decoration: none;
-}
-.casedetails:hover .image {
-    opacity: 0.3;
-}
-.casedetails:hover .casetext {
-    display: block;
-}
-</style>
 <?php
 get_footer();
 

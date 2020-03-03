@@ -88,6 +88,7 @@ wp_reset_postdata();
     </div>
   </div>
 </div>
+</div>
 <?php
 }
 else
@@ -99,7 +100,7 @@ $content_section_content = get_field('content_section_content',$post_id );
 $content_section_image = get_field('content_section_image',$post_id );
 $icon_section = get_field('icon_section',$post_id );
 $bottom_image = get_field('bottom_image',$post_id );
-}
+
 ?>
 <div class="col-md-12 desktop-case-tops">
   <div class="row">
@@ -361,77 +362,7 @@ $testimonial_content = $home_fields['testimonial']["testimonial_content"];
   </div>
 </div>
 </div>
-<style>
-section.case-content {
-background: #000;
-color: #fff;
-padding: 70px 0;
-}
-.ff-case-text p {
-color: #fff;
-padding-top: 20px;
-line-height: 30px;
-}
-.case-icon-box
-{
-padding: 15px 10px;
-}
-.case-icon-box img {
-width: 100px;
-}
-.case-icon-box h4 {
-width: 100%;
-font-size:30px;
-margin:20px 0 10px;
-}
-.case-icon-box p {
-width: 100%;
-padding:0;
-}
-.case-yellow {
-background: #FDCD0B;
-padding: 15px 10px;
-}
-.case-button
-{
-	background:#000;
-	padding:50px 0;
-}
-.case-button a {
-    background: #fdcd0b;
-    color: #000;
-    text-transform: uppercase;
-    border: 0;
-    border-radius: 0;
-    font-weight: 600;
-    font-size: 20px;
-    min-width: 200px;
-}
-.case-button a:hover {
-	 background: #fdcd0b;
-    color: #fff;
-}
-
-.next-prv a:hover {
-    background: #fdcd0bc2;
-}
-.next-prv a {
-    color: #000;
-    display: block;
-    padding: 140px 20px;
-    width: 100%;
-	text-decoration:none;
-}
-.next-prv a h3, .next-prv a p
-{
-	margin:0;
-}
-.next-prv {
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    padding: 0;
-}
-</style>
 <?php
+}
 get_footer();
 ?>
