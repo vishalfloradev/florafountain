@@ -92,5 +92,162 @@ endif;
 </div>
 <div class="clearfix"></div>
 <?php
+// Testimonial Section
+$testimonial_user_text = $home_fields['testimonial']['testimonial_user_text'];
+$testimonial_words = $home_fields['testimonial']['testimonial_words'];
+$testimonial_content = $home_fields['testimonial']["testimonial_content"];
+
+?>
+<!-- Start Testimonial Section -->
+
+<div class="col-md-12 ff-hm-part-2 ff-mt-50 desktop-testimonial">
+  <div class="row">
+    <section id="testimonial-area" class="container">
+      <div class="row"> 
+        <!--start section heading-->
+        <div class="col-md-8 offset-md-2">
+          <div class="section-heading text-center">
+            <?php
+                        if (!empty($testimonial_user_text)) {
+                            echo "<h5>" . $testimonial_user_text . "</h5>";
+                        }
+                        if (!empty($testimonial_words)) {
+                            echo "<h5>" . $testimonial_words . "</h5>";
+                        }
+                        if (!empty($testimonial_content)) {
+                            echo $testimonial_content;
+                        }
+                        ?>
+          </div>
+        </div>
+        <!--end section heading--> 
+      </div>
+      <div class="testi-wrap">
+        <?php
+                global $post;
+                $myposts = get_posts(array(
+                    'posts_per_page' => 7,
+                    'post_status' => 'publish',
+                    'post_type' => 'testimonial',
+                    'orderby' => 'ID',
+                    'order' => 'ASC',
+                ));
+                if ($myposts) {
+                    $i = 1;
+                    foreach ($myposts as $post):
+                        setup_postdata($post);
+                        $images = get_field("testimonial-image", $post->ID);
+                        $company_name = get_field("company-name", $post->ID);
+                        if ($i == 1)
+                            $class = 'active';
+                        else
+                            $class = 'inactive';
+                        ?>
+        <!--start testimonial single-->
+        <div class="client-single <?php echo $class; ?> position-<?php echo $i; ?>"
+                             data-position="position-<?php echo $i; ?>">
+          <div class="client-img"> <img src="<?php echo $images ?>" alt="Web Design Company"> </div>
+          <div class="client-comment">
+            <div class="conhtag">
+              <?php the_content(); ?>
+            </div>
+            <span><i class="fa fa-quote-left" aria-hidden="true"></i></span> </div>
+          <div class="client-info"> <b>
+            <?php the_title(); ?>
+            </b>
+            <p><?php echo $company_name; ?></p>
+          </div>
+        </div>
+        <!--end testimonial single-->
+        <?php
+                        $i++;
+                    endforeach;
+                    wp_reset_postdata();
+                }
+                ?>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="container mobile-testimonial">
+  <div class="row">
+    <div class="col-md-8 col-center m-auto"><span><i class="fa fa-quote-left" aria-hidden="true"></i></span>
+      <div id="myCarousel" class="carousel slide" data-ride="carousel"> 
+        <!-- Carousel indicators -->
+        <div class="carousel-inner"> 
+          <!-- Wrapper for carousel items -->
+          <?php
+                    if ($myposts) {
+                        $t = 1;
+                        foreach ($myposts as $mobile_post):
+                            setup_postdata($mobile_post);
+                            $mobileimages = get_field("testimonial-image", $mobile_post->ID);
+                            $moblie_company_name = get_field("company-name", $mobile_post->ID);
+                            if ($t == 1)
+                                $class = 'active';
+                            else
+                                $class = 'inactive';
+                            ?>
+          <div class="item carousel-item <?php echo $class; ?> ">
+            <div class="img-box"> <img src="<?php echo $mobileimages; ?>" alt="Digital Marketing Company"> </div>
+            <div Class="testimonial">
+              <?php the_content(); ?>
+            </div>
+            <p class="overview"><b><?php echo $moblie_company_name; ?></b></p>
+          </div>
+          <?php
+                            $t++;
+                        endforeach;
+                        wp_reset_postdata();
+                    }
+                    ?>
+        </div>
+        <!-- Carousel controls --> 
+        <a class="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev"> <i
+                            class="fa fa-angle-left"></i> </a> <a
+                        class="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next"> <i class="fa fa-angle-right"></i> </a></div>
+    </div>
+  </div>
+</div>
+
+<!-- End Testimonial Section -->
+<div class="container about-sec-1">
+  <div class="section-heading text-center">
+    <h5> Find Us On Instagram </h5>
+  </div>
+  <?php echo  do_shortcode('[instagram-feed num=4 cols=4   showbio=false  showfollow=false showbutton=false showheader=false]');?>
+  <div class="section-heading text-center">
+    <h5> Our Secrets...Revealed </h5>
+  </div>
+  <div class="row blog-home">
+    <?php
+        // the query
+        $wpb_all_query = new WP_Query(array('post_type' => 'post', 'post_status' => 'publish', 'posts_per_page' => 3)); ?>
+    <?php
+        // Start the Loop.
+        while ($wpb_all_query->have_posts()) : $wpb_all_query->the_post();
+            ?>
+    <div class="col-md-6 col-lg-4 mb-50px">
+      <article class="post-list">
+        <div class="event_img">
+          <?php the_post_thumbnail('medium'); ?>
+        </div>
+        <div class="event_meta_top"> <span class="event_meta">
+          <?php //the_author_meta('user_nicename'); ?>
+          </span>
+          <?php //the_category(); ?>
+          <span class="event_meta_date">
+          <?php the_date(); ?>
+          </span> </div>
+        <h3 class="event_title"> <a href="<?php echo get_permalink(); ?>"><?php echo get_the_title(); ?> </a> </h3>
+        <div class="event_meta_top"> <?php echo wp_trim_words(get_the_content(), 30, '...'); ?> </div>
+        <a href="<?php echo get_permalink(); ?>" class="btn btn-outline-dark rounded-0">Read More</a> </article>
+    </div>
+    <?php
+        endwhile;
+        ?>
+  </div>
+</div>
+<?php
 get_footer();
 
