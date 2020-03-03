@@ -63,7 +63,7 @@ $client_header_title = get_field('client_header_title', 'option');
                                     ?>
                                     <div class="carousel-item <?php echo $class; ?>">
                                         <img src="<?php echo $slider['slider_image']; ?>" class="d-block w-100"
-                                             alt="<?php echo $slider['slider_title']; ?>">
+                                             alt="<?php echo $slider['alt_tag']; ?>">
 
                                         <div class="ff-high-light"><h1> <?php echo $slider['slider_title']; ?> </h1>
                                         </div>
@@ -126,10 +126,10 @@ $client_header_title = get_field('client_header_title', 'option');
                         <?php
                         if (wp_is_mobile()) :?>
                             <img class="mobile lazy" src="<?php echo $value['services_grid_image'] ?>"
-                                 alt="<?php echo $value['services_grid_title'] ?>"/>
+                                 alt="<?php echo $value['alt_tag'] ?>"/>
                         <?php else: ?>
                             <img class="desktop lazy" src="<?php echo $value['services_grid_image'] ?>"
-                                 alt="<?php echo $value['services_grid_title'] ?>"/>
+                                 alt="<?php echo $value['alt_tag'] ?>"/>
                         <?php endif ?>
                         <div class="box-content">
                             <div class="content">
@@ -161,10 +161,10 @@ $client_header_title = get_field('client_header_title', 'option');
                                 <div class="box">
                                     <?php if (wp_is_mobile()) : ?>
                                         <img class="mobile lazy" src=" <?php echo $grid['small_grid_image']; ?> "
-                                             alt="<?php echo $grid['small_grid_title']; ?>">
+                                             alt="<?php echo $grid['alt_tag']; ?>">
                                     <?php else: ?>
                                         <img class="desktop lazy" src=" <?php echo $grid['small_grid_image']; ?> "
-                                             alt="<?php echo $grid['small_grid_title']; ?>">
+                                             alt="<?php echo $grid['alt_tag']; ?>">
                                     <?php endif; ?>
                                     <div class="box-content">
                                         <div class="content">
@@ -220,7 +220,7 @@ $client_header_title = get_field('client_header_title', 'option');
                 ?>
                 <div class="slide"><img
                             class="" src="<?php echo $value['client_logo_image'] ?>"
-                            alt="Web Development Company"></div>
+                            alt="<?php echo $value['alt_tag'] ?>"></div>
             <?php
             endforeach;
         endif;
@@ -310,7 +310,7 @@ $client_header_title = get_field('client_header_title', 'option');
                         <div class="client-single <?php echo $class; ?> position-<?php echo $i; ?>"
                              data-position="position-<?php echo $i; ?>">
                             <div class="client-img">
-                                <img src="<?php echo $images ?>" alt="Web Design Company">
+                                <img src="<?php echo $images ?>" alt="<?php echo get_field("alt_tag", $post->ID); ?>">
                             </div>
                             <div class="client-comment">
                                 <div class="conhtag"><?php the_content(); ?></div>
@@ -354,7 +354,7 @@ $client_header_title = get_field('client_header_title', 'option');
                             ?>
                             <div class="item carousel-item <?php echo $class; ?> ">
                                 <div class="img-box">
-                                    <img src="<?php echo $mobileimages; ?>" alt="Digital Marketing Company">
+                                    <img src="<?php echo $mobileimages; ?>" alt="<?php echo get_field("alt_tag", $post->ID); ?>">
                                 </div>
                                 <div Class="testimonial"> <?php the_content(); ?> </div>
                                 <p class="overview"><b><?php echo $moblie_company_name; ?></b></p>
