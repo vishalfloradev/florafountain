@@ -25,7 +25,11 @@ header.main-header.fixed-header .outer-box {
 }
 @media only screen and (max-width:768px) {
 	
-    
+    .ff-case-text .text-right,.ff-case-text .text-left {
+    text-align: center !important;
+    margin-bottom: 10px;
+}
+
     .blog_title {
       
         padding: 10px;
