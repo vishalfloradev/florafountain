@@ -1460,7 +1460,7 @@ nav > div a.nav-item.nav-link:hover, nav > div a.nav-item.nav-link:focus {
 }
 
 .row.ff-bg-career {
-    background-image: url("images/ff-career-bg.jpg");
+  /*  background-image: url("images/ff-career-bg.jpg"); */
     background-repeat: no-repeat;
     padding-top: 50px;
     padding-bottom: 30px;
@@ -2311,7 +2311,7 @@ nav > div a.nav-item.nav-link:hover, nav > div a.nav-item.nav-link:focus {
 .carousel-control {
     z-index: 2;
 }
-
+/*
 .carousel-testimonial .carousel-inner .col-right .samir-patel {
     background: url("images/vashim.png");
     height: 615px;
@@ -2359,7 +2359,7 @@ nav > div a.nav-item.nav-link:hover, nav > div a.nav-item.nav-link:focus {
     height: 615px;
     background-repeat: no-repeat;
 }
-
+ */
 .row.ff-bf-yellow.ff-team-com {
     padding-top: 50px;
 }
