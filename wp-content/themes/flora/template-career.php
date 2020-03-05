@@ -51,7 +51,8 @@ $career_content= get_field('career_content');
 <div class="clearfix"></div>
 <div class="container ff-mt-70 text-center ff-about-text">
   <div class="row">
-    <div class="col-md-12">
+  <div class="col-md-2"></div>
+    <div class="col-md-8">
       <?php if (!empty($career_main_title ))  : ?>
       <h1><?php echo $career_main_title; ?></h1>
       <?php endif; ?>
